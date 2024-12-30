@@ -1,6 +1,6 @@
 # AUEB-Archimedes at RIRAG-2025: Is obligation concatenation really all you need?
 
-This repository contains Jupyter Notebooks describing our systems for the RIRAG-2025 shared task. It is designed to support research in RAG (Retrieval-Augmented Generation) systems. This project leverages a combination of statistical and neural retrieval techniques, neural rerankers, and advanced generative models, with a focus on optimizing performance for the RePASs evaluation metric.
+This repository contains Python scripts describing our systems for the RIRAG-2025 shared task. It is designed to support research in RAG (Retrieval-Augmented Generation) systems. This project leverages a combination of statistical and neural retrieval techniques, neural rerankers, and advanced generative models, with a focus on optimizing performance for the RePASs evaluation metric.
 
 ## Prerequisites
 
@@ -10,25 +10,27 @@ Before running the experiments, ensure you have the following installed:
 - Required libraries:
   ```bash
   pip install tqdm
-  pip install numpy
-  pip install torch
-  pip install spacy
-  pip install openai
-  pip install pandas
-  pip install tiktoken
-  pip install rank-bm25
-  pip install -U voyageai
-
+   pip install numpy
+   pip install torch
+   pip install transformers
+   pip install scikit-learn
+   pip install nltk
+   pip install spacy
+   pip install openai
+   pip install pandas
+   pip install tiktoken
+   pip install rank-bm25
+   pip install tenacity
+   pip install -U voyageai
   ```
-- Jupyter Notebook for running `.ipynb` files (optional).
 
 ## Project Overview
 
-This repository consists of utilities, notebooks, and scripts structured to address the subtasks of the RIRAG-2025 shared task:
+This repository consists of scripts structured to address the subtasks of the RIRAG-2025 shared task:
 
 1. **Passage Retrieval**:
-   - Identify the top-10 most relevant passages from a regulatory text corpus.
-   - Implement advanced ranking techniques such as Rank Fusion and neural reranking.
+   - Retrieve the top-10 most relevant passages from a regulatory text corpus.
+   - Implement advanced techniques such as **Rank Fusion** and **Neural Reranking**.
 
 2. **Answer Generation**:
    - Generate coherent, accurate answers based on retrieved passages.
@@ -36,47 +38,50 @@ This repository consists of utilities, notebooks, and scripts structured to addr
 
 ## Files Overview
 
-### 1. `rag_utils.py`
-This Python module contains utility functions for handling retrieval and ranking tasks:
-- **TREC Parsing**: Parse TREC-formatted files for retrieval results.
-- **Score Normalization**: Normalize passage scores for consistency.
-- **Rank Fusion**: Combine rankings from multiple retrievers using weighted fusion.
+### 1. `retrieval.py`
+   - Implements passage retrieval pipelines using:
+     - **BM25** 
+     - **Neural embedding-based retrieval** with models like `voyage-law-2` and `voyage-finance-2`.
+   - Includes functions for:
+     - Rank fusion.
+     - Triple-rank fusion with reranking.
+   - Outputs TREC-format ranking files.
 
-### 2. `retrieval.ipynb`
-A Jupyter Notebook for executing retrieval experiments:
-- Set up and evaluate retrieval pipelines.
-- Test ranking and filtering logic using utilities from `rag_utils.py`.
-- Visualize the results.
+### 2. `generation.py`
+   - Implements passage-based answer generation using LLMs (e.g., GPT-4 and LegalBERT) for question answering.
+   - Includes:
+     - Iterative refinement of answers.
+     - Final scoring and evaluation of answers.
 
-### 3. `generation.ipynb`
-A Jupyter Notebook for running passage generation experiments:
-- Passage-based answer generation workflows.
-- Generation using LLMs and iterative refinement to improve answer coherence and obligation coverage.
-
-### 4. `prompts.json`
+### 3. `prompts.json`
 A JSON file containing all the prompts used for our algorithms in the form of a dictionary.
 
 ## Running the Experiments
-You can replicate our experiments by running the two Jupyter Notebooks.
 
-### Using the Rank Fusion Functionality
-1. Import `rag_utils.py` into your Python script:
-   ```python
-   from rag_utils import *
+### Passage Retrieval:
+1. Run the retrieval pipelines to generate retrieval rankings:
+   ```bash
+   python retrieval.py
    ```
-2. Provide the scores from multiple retrievers and get the fused rankings:
-   ```python
-   fused_scores, fused_indices = rank_fusion(scores_x, scores_y, a=0.5, top_k=10)
+
+2. Evaluate the results using metrics such as **recall@10** and **MAP@10**.
+
+### Answer Generation:
+1. Process the retrieved passages to generate answers using `generation.py`:
+   ```bash
+   python generation.py
    ```
+
+2. Evaluate the generated answers using the **RePASs metric**, which includes:
+   - Entailment score.
+   - Contradiction score.
+   - Obligation coverage.
 
 ## Notes
 
 1. If you do not have a GPU, ensure to modify the scripts to disable GPU-based operations by setting `device='cpu'`.
-2. For replicating experiments in the provided notebooks, replace placeholder paths with your dataset paths.
-3. The `generation.ipynb` notebook relies on Hugging Face models. Make sure to log in to your Hugging Face account if required.
-4. For evaluating each subtask and experiment:
-   - For passage retrieval, metrics like `recall@10` and `MAP@10` are used.
-   - For answer generation, the  **RePASs metric** is utilized to assess entailment, contradiction, and obligation coverage.
+2.  Update the paths in `retrieval.py` and `generation.py` to match your local setup, if needed.
+3. Certain models may require a Hugging Face account.
 
 ### BibTeX
 
