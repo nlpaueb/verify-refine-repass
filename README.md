@@ -2,28 +2,6 @@
 
 This repository contains Python scripts describing our systems for the RIRAG-2025 shared task. It is designed to support research in RAG (Retrieval-Augmented Generation) systems. This project leverages a combination of statistical and neural retrieval techniques, neural rerankers, and advanced generative models, with a focus on optimizing performance for the RePASs evaluation metric.
 
-## Prerequisites
-
-Before running the experiments, ensure you have the following installed:
-
-- Python 3.11 or higher
-- Required libraries:
-  ```bash
-  pip install tqdm
-   pip install numpy
-   pip install torch
-   pip install transformers
-   pip install scikit-learn
-   pip install nltk
-   pip install spacy
-   pip install openai
-   pip install pandas
-   pip install tiktoken
-   pip install rank-bm25
-   pip install tenacity
-   pip install -U voyageai
-  ```
-
 ## Project Overview
 
 This repository consists of scripts structured to address the subtasks of the RIRAG-2025 shared task:
@@ -55,6 +33,28 @@ This repository consists of scripts structured to address the subtasks of the RI
 
 ### 3. `prompts.json`
 A JSON file containing all the prompts used for our algorithms in the form of a dictionary.
+
+## Prerequisites
+
+Before running the experiments, ensure you have the following installed:
+
+- Python 3.11 or higher
+- Required libraries:
+  ```bash
+   pip install tqdm
+   pip install numpy
+   pip install torch
+   pip install transformers
+   pip install scikit-learn
+   pip install nltk
+   pip install spacy
+   pip install openai
+   pip install pandas
+   pip install tiktoken
+   pip install rank-bm25
+   pip install tenacity
+   pip install -U voyageai
+  ```
 
 ## Running the Experiments
 
